@@ -11,7 +11,7 @@ DEFAULT_FILES = {
     "commands.index": "",
     "requirements.txt": "",
     ".env": "",
-    "saved_variables.json": f"{}",
+    "saved_variables.json": "{}",
 }
 
 
