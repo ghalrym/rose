@@ -1,10 +1,19 @@
 """Rose CLI - run with: python -m rose"""
 
+import os
 import typer
 
 from rose.command_framework import VERSION
 from rose.command_framework.command_index import CommandIndex
 from rose.command_framework.constants import PROJECT_DIR
+
+DEFAULT_FILES = {
+    "commands.index": "",
+    "requirements.txt": "",
+    ".env": "",
+    "saved_variables.json": f"{}",
+}
+
 
 app = typer.Typer(
     no_args_is_help=True,
@@ -13,6 +22,15 @@ app = typer.Typer(
     add_completion=False,
     add_help_option=False,
 )
+
+
+# Create required files
+for file, content in DEFAULT_FILES.items():
+    file_path = os.path.join(PROJECT_DIR, file)
+    if not os.path.exists(file_path):
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, "w") as f:
+            f.write(content)
 
 
 @app.command()
