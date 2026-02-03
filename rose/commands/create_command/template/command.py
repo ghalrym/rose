@@ -11,4 +11,4 @@ class *PascalCaseName*Command(Command):
     @staticmethod
     def call(args: list[str]) -> None:
         # TODO: Implement command logic
-        ...
+        pass

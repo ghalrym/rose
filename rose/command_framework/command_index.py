@@ -1,5 +1,5 @@
-from functools import lru_cache
 import subprocess
+from functools import lru_cache
 from typing import Any
 
 from rose.command_framework.command import Command
