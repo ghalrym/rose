@@ -8,7 +8,7 @@ from rose.command_framework.command_index import CommandIndex
 from rose.command_framework.constants import PROJECT_DIR
 
 DEFAULT_FILES = {
-    "commands.index": "",
+    "commands.index": "create_command\nenvironment_variables\ninstall\n",
     "requirements.txt": "",
     ".env": "",
     "saved_variables.json": "{}",
