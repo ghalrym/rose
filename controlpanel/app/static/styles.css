@@ -1,0 +1,152 @@
+/* Control panel – layout and nav */
+
+.control-panel-shell {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.control-panel-header {
+  flex-shrink: 0;
+  padding: 1rem 1.5rem;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.control-panel-header h1 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.control-panel-header .muted {
+  margin: 0;
+}
+
+.service-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--bg-page);
+  border-bottom: 1px solid var(--border);
+}
+
+.service-nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.service-nav-link:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+.service-nav-link.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.service-nav-link.active:hover {
+  background: var(--accent-hover);
+  color: #fff;
+}
+
+.iframe-container {
+  flex: 1;
+  min-height: 0;
+  padding: 0;
+  background: var(--bg-page);
+}
+
+.service-frame {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  border: none;
+  display: block;
+  background: var(--bg-card);
+}
+
+/* Events page (when shown in iframe) */
+.events-page {
+  padding: 1.5rem 1.5rem 2rem;
+}
+
+.events-page .page-header {
+  margin-bottom: 1rem;
+}
+
+.events-page .page-header .muted {
+  margin: 0.25rem 0 0 0;
+}
+
+.events-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 720px;
+}
+
+.events-list-item {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.875rem;
+  align-items: flex-start;
+}
+
+.events-list-item:last-child {
+  border-bottom: none;
+}
+
+.events-list-time {
+  flex-shrink: 0;
+  width: 11rem;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.events-list-detail {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  align-items: baseline;
+}
+
+.events-list-source {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.events-list-event {
+  color: var(--text-muted);
+}
+
+.events-list-message {
+  width: 100%;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.events-list-empty {
+  padding: 1.5rem 1rem;
+  font-size: 0.875rem;
+}

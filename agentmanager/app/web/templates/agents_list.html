@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Agents – Agentmanager{% endblock %}
+{% block body %}
+<header class="page-header">
+  <h1>Agentmanager</h1>
+  <a href="/agents/new" class="btn btn-primary">Create agent</a>
+</header>
+
+<main class="agents-list">
+  <p>Agents are configured with a name, LLM provider (Ollama or OpenAI), model, AGENT.md content, and optional MCP servers. Use the API to chat: <code>POST /api/chat</code> with <code>agent_id</code> and <code>messages</code>.</p>
+  <ul class="agent-cards">
+    {% for agent in agents %}
+    <li class="agent-card">
+      <h2>{{ agent.name }}</h2>
+      <p><strong>Provider:</strong> {{ agent.provider.value }} · <strong>Model:</strong> {{ agent.model }}</p>
+      <p class="agent-meta">Created {{ agent.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+      <div class="form-actions">
+        <a href="/agents/{{ agent.id }}/edit" class="btn btn-ghost">Edit</a>
+        <form method="post" action="/agents/{{ agent.id }}/delete" class="form-inline" onsubmit="return confirm('Delete this agent?');">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% if not agents %}
+  <p>No agents yet. <a href="/agents/new">Create one</a>.</p>
+  {% endif %}
+</main>
+{% endblock %}

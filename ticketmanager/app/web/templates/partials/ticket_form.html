@@ -1,0 +1,41 @@
+<form method="post" action="/tickets" class="ticket-form" id="create-ticket-form">
+  <label for="create-title">Title</label>
+  <input type="text" id="create-title" name="title" required placeholder="Ticket title">
+  <label for="create-instructions">Instructions</label>
+  <textarea id="create-instructions" name="instructions" rows="3" placeholder="Instructions or description"></textarea>
+  <label for="create-assignee">Assignee</label>
+  <input type="text" id="create-assignee" name="assignee" placeholder="Assignee name">
+  <label for="create-start-datetime">Start date & time (optional)</label>
+  <input type="datetime-local" id="create-start-datetime" name="start_datetime">
+  <label for="create-status">Status</label>
+  <select name="status" id="create-status" class="status-select">
+    <option value="todo" selected>Todo</option>
+    <option value="blocked">Blocked</option>
+  </select>
+  <div class="create-blocked-by-row" id="create-blocked-by-row" style="display: none;">
+    <label for="create-blocked-by">Blocked by</label>
+    <select name="blocked_by_ticket_id" id="create-blocked-by" class="status-select">
+      <option value="">— Select ticket —</option>
+      {% for ticket in all_tickets %}
+        <option value="{{ ticket.id }}">{{ ticket.title }} ({{ ticket.status.value }})</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="form-actions">
+    <label for="create-ticket-modal-toggle" class="btn btn-ghost">Cancel</label>
+    <button type="submit" class="btn btn-primary">Create ticket</button>
+  </div>
+</form>
+<script>
+(function() {
+  var form = document.getElementById('create-ticket-form');
+  if (!form) return;
+  var statusSelect = form.querySelector('#create-status');
+  var blockedByRow = form.querySelector('#create-blocked-by-row');
+  if (statusSelect && blockedByRow) {
+    statusSelect.addEventListener('change', function() {
+      blockedByRow.style.display = this.value === 'blocked' ? 'block' : 'none';
+    });
+  }
+})();
+</script>

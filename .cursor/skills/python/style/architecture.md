@@ -1,0 +1,8 @@
+# Architecture
+
+- **Default to OOP**: Put logic in classes (methods, composition). Do not implement features as a set of module-level or standalone functions when the logic can be grouped into a clear responsibility.
+- **Only the entry point is a plain function**: The *single* place you may use a plain function is the **one** function that is the CLI command or HTTP route (e.g. the Typer `@app.command()` handler or the FastAPI `@router.get(...)` handler). That function should be a thin wrapper that instantiates a class and calls a method (e.g. `Installer().run()`); all real logic lives in the class.
+- **Supporting logic in classes**: Template resolution, prompts, file I/O, validation, and any multi-step flow belong in a class with typed methods and docstrings, not in loose functions that the command then calls.
+- When in doubt, introduce a class that owns the workflow; keep the command/route handler to a few lines that delegate.
+- **FastAPI: injectable dependencies**: Keep injectable dependencies (config, stores, services) in a dedicated module (e.g. a `dependencies` module or folder). Define dependency functions and add them to route handlers via `Depends(...)` so endpoints receive them as arguments instead of resolving them inside the handler. The injectable for config (or similar) can live in the dependencies module and delegate to the real loader (e.g. `get_config()`) so loading logic stays in one place and the injectable lives in one place.
+- **FastAPI: typed responses**: Route handlers must return Pydantic models (or `list[SomeModel]`, `StreamingResponse`, etc.), never untyped `dict` or `list[dict]`. Define response models (e.g. `DiscordStatusResponse`) for each response shape so the API stays typed and documented.

@@ -1,0 +1,6 @@
+# Naming
+
+- **Use full words**: Prefer actual words over abbreviations or shortened forms. Names should be readable at a glance (e.g. `session_store`, `build_tools`, `message`). Avoid ad-hoc shortenings (e.g. `msg` → `message`, `doc` → `document`, `cfg` → `config`, `svc` → `service`, `sess` → `session`). Established short names are fine when the type or context makes the meaning clear (e.g. `config` for a `Config` instance, `id` for a primary key).
+- **Never use single-letter names**: Do not use letter-based names such as `a`, `x`, `i`, or `e` for variables, parameters, or attributes. Use descriptive names (e.g. `index`, `item`, `exception`, `element`). The only common exception is in a very short lambda or comprehension where the meaning is trivial and the name is never read elsewhere; even then, prefer a short word.
+- **Acceptable**: Full words, clear multi-word names (e.g. `openrose_config_location`, `session_store`, `get_chat_service`), and well-known domain terms that are already short (e.g. `id` for a primary key when the type is obvious).
+- **Not acceptable**: Abbreviations invented for the codebase (e.g. `cfg`, `svc`, `sess`), shortened forms that obscure meaning (e.g. `msgs`, `rec`, `fn`), and any single-letter name (e.g. `a`, `x`, `i`, `e`).

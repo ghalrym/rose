@@ -1,0 +1,19 @@
+/* Discord Gateway – channel assignments list (extends platform theme) */
+
+.assignments-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.assignments-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.assignments-list li:last-child {
+  border-bottom: none;
+}

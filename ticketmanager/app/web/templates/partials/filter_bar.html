@@ -1,0 +1,12 @@
+<form method="get" action="/" class="filter-bar" id="filter-form">
+  <label for="filter-assignee">Assignee</label>
+  <input type="text" id="filter-assignee" name="assignee" value="{{ filter_assignee }}" placeholder="Filter by assignee">
+  <label for="filter-from-date">From date</label>
+  <input type="datetime-local" id="filter-from-date" name="from_date" value="{{ filter_from_date }}">
+  <label for="filter-to-date">To date</label>
+  <input type="datetime-local" id="filter-to-date" name="to_date" value="{{ filter_to_date }}">
+  <label for="filter-search">Search</label>
+  <input type="text" id="filter-search" name="search" value="{{ filter_search }}" placeholder="Search title and instructions">
+  <button type="submit">Apply filters</button>
+  <a href="/" class="clear-filters">Clear</a>
+</form>

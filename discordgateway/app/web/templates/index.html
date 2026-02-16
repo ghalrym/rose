@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}DiscordGateway{% endblock %}
+{% block body %}
+<header class="page-header">
+  <h1>DiscordGateway</h1>
+</header>
+
+<p class="muted">Configure the Discord bot token and assign agents to channels. Messages in assigned channels are relayed to the message queue; the heartbeat drives agent replies, and replies are sent back to Discord.</p>
+
+<section class="section">
+  <h2>Bot token</h2>
+  {% if config.token_set %}
+  <p>Token is set (preview: …{{ config.token_preview }})</p>
+  {% else %}
+  <p>No token set. Set a token and restart the service for the bot to connect.</p>
+  {% endif %}
+  <form action="/config" method="post" class="form-row">
+    <label for="token">New token (leave empty to clear):</label>
+    <input type="password" id="token" name="token" placeholder="Optional" autocomplete="off" style="min-width: 200px;">
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+</section>
+
+<section class="section">
+  <h2>Channel assignments</h2>
+  <p class="muted">Assign an agent to a Discord channel. Only channels in servers the bot is in are listed.</p>
+  {% if not guilds %}
+  <p class="muted">Bot is not connected or has no guilds. Set a token and invite the bot to your server, then restart.</p>
+  {% else %}
+  <form action="/channel-assignments" method="post" id="assign-form">
+    <div class="form-row">
+      <label for="channel_id">Channel</label>
+      <select id="channel_id" name="channel_id" required>
+        <option value="">Select channel</option>
+        {% for guild in guilds %}
+        {% for channel in guild.channels %}
+        <option value="{{ channel.id }}" data-guild="{{ guild.id }}">{{ guild.name }} — #{{ channel.name }}</option>
+        {% endfor %}
+        {% endfor %}
+      </select>
+      <input type="hidden" id="guild_id" name="guild_id" value="">
+    </div>
+    <div class="form-row">
+      <label for="agent_id">Agent</label>
+      <select id="agent_id" name="agent_id" required>
+        <option value="">Select agent</option>
+        {% for agent in agents %}
+        <option value="{{ agent.id }}">{{ agent.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-row">
+      <button type="submit" class="btn btn-primary">Assign</button>
+    </div>
+  </form>
+  {% if not agents %}
+  <p class="muted">No agents found. Create agents in the Agentmanager service (AGENTMANAGER_URL).</p>
+  {% endif %}
+  <script>
+    document.getElementById('channel_id').addEventListener('change', function() {
+      var opt = this.options[this.selectedIndex];
+      document.getElementById('guild_id').value = opt && opt.dataset.guild ? opt.dataset.guild : '';
+    });
+  </script>
+  {% endif %}
+
+  <h3 style="margin-top: 1.5rem;">Current assignments</h3>
+  {% if assignments %}
+  <ul class="assignments-list">
+    {% for a in assignments %}
+    <li>
+      <span>{{ a.guild_id }} / {{ a.channel_id }} → agent {{ a.agent_id }}</span>
+      <a href="/channel-assignments/{{ a.guild_id }}/{{ a.channel_id }}/delete" class="btn btn-ghost">Remove</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="muted">No channel assignments yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

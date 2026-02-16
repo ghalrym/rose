@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{% if edit %}Edit{% else %}New{% endif %} agent – Agentmanager{% endblock %}
+{% block body %}
+<header class="page-header">
+  <h1>{% if edit %}Edit agent{% else %}New agent{% endif %}</h1>
+  <a href="/" class="btn btn-ghost">Back to list</a>
+</header>
+
+<main class="agent-form-page">
+  <form method="post" action="{% if edit %}/agents/{{ agent.id }}{% else %}/agents{% endif %}" class="agent-form">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" required placeholder="Agent name" value="{{ agent.name if agent else '' }}">
+    <label for="provider">Provider</label>
+    <select id="provider" name="provider">
+      {% for p in providers %}
+      <option value="{{ p }}" {% if agent and agent.provider.value == p %}selected{% endif %}>{{ p }}</option>
+      {% endfor %}
+    </select>
+    <label for="model">Model</label>
+    <input type="text" id="model" name="model" required placeholder="e.g. llama3 or gpt-4" value="{{ agent.model if agent else 'llama3' }}">
+    <label for="ollama_base_url">Ollama base URL (optional; for Ollama agents only, e.g. http://host.docker.internal:11434)</label>
+    <input type="url" id="ollama_base_url" name="ollama_base_url" placeholder="Leave empty to use default or OLLAMA_BASE_URL env" value="{{ agent.ollama_base_url if agent and agent.ollama_base_url else '' }}">
+    <label for="agent_md">AGENT.md (system instructions for the agent)</label>
+    <textarea id="agent_md" name="agent_md" rows="8" placeholder="Markdown instructions...">{{ agent.agent_md if agent else '' }}</textarea>
+    <label for="mcp_servers">MCP servers (JSON, optional)</label>
+    <textarea id="mcp_servers" name="mcp_servers" rows="4" placeholder='{"server_name": {"transport": "stdio", "command": "python", "args": ["script.py"]}}'>{{ mcp_servers_json }}</textarea>
+    <div class="form-actions">
+      <a href="/" class="btn btn-ghost">Cancel</a>
+      <button type="submit" class="btn btn-primary">{% if edit %}Update{% else %}Create{% endif %} agent</button>
+    </div>
+  </form>
+</main>
+{% endblock %}

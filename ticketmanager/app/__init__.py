@@ -1,0 +1,1 @@
+"""Kanban ticketing application package."""

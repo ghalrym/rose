@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Kanban – Ticket Manager{% endblock %}
+{% block body %}
+<input type="checkbox" id="create-ticket-modal-toggle" class="modal-toggle" hidden>
+<div class="modal-overlay" aria-hidden="true">
+  <label for="create-ticket-modal-toggle" class="modal-backdrop"></label>
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="create-ticket-modal-title">
+    <div class="modal-header">
+      <h2 id="create-ticket-modal-title">New ticket</h2>
+      <label for="create-ticket-modal-toggle" class="modal-close" aria-label="Close">&times;</label>
+    </div>
+    <div class="modal-body">
+      {% include "partials/ticket_form.html" %}
+    </div>
+  </div>
+</div>
+
+<header class="page-header">
+  <h1>Ticket Manager</h1>
+  <label for="create-ticket-modal-toggle" class="btn btn-primary">Create ticket</label>
+</header>
+
+{% if error %}
+  <div class="error-banner" role="alert">
+    {% if error == 'create_blocked_requires_link' %}
+      To create a blocked ticket, please select which ticket blocks it.
+    {% elif error == 'create_blocked_ticket_not_found' %}
+      The selected blocking ticket was not found.
+    {% elif error == 'create_invalid' %}
+      Could not create ticket. Check your input.
+    {% elif error == 'blocked_requires_link' %}
+      To set status to Blocked, please select a ticket in "Blocked by" first, then click Update status.
+    {% elif error == 'blocked_self' %}
+      A ticket cannot be blocked by itself.
+    {% elif error == 'blocked_ticket_not_found' %}
+      The selected blocking ticket was not found.
+    {% else %}
+      {{ error }}
+    {% endif %}
+  </div>
+{% endif %}
+
+{% include "partials/filter_bar.html" %}
+
+<main class="kanban-board">
+  <section class="kanban-column" id="col-todo">
+    <h2>Todo</h2>
+    <div class="ticket-list">
+      {% for ticket in tickets_by_status.todo %}
+        {% include "partials/ticket_card.html" %}
+      {% endfor %}
+    </div>
+  </section>
+  <section class="kanban-column" id="col-in-progress">
+    <h2>In progress</h2>
+    <div class="ticket-list">
+      {% for ticket in tickets_by_status.in_progress %}
+        {% include "partials/ticket_card.html" %}
+      {% endfor %}
+    </div>
+  </section>
+  <section class="kanban-column" id="col-review">
+    <h2>Review</h2>
+    <div class="ticket-list">
+      {% for ticket in tickets_by_status.review %}
+        {% include "partials/ticket_card.html" %}
+      {% endfor %}
+    </div>
+  </section>
+  <section class="kanban-column" id="col-done">
+    <h2>Done</h2>
+    <div class="ticket-list">
+      {% for ticket in tickets_by_status.done %}
+        {% include "partials/ticket_card.html" %}
+      {% endfor %}
+    </div>
+  </section>
+  <section class="kanban-column" id="col-blocked">
+    <h2>Blocked</h2>
+    <div class="ticket-list">
+      {% for ticket in tickets_by_status.blocked %}
+        {% include "partials/ticket_card.html" %}
+      {% endfor %}
+    </div>
+  </section>
+</main>
+{% endblock %}

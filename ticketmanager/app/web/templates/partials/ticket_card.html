@@ -1,0 +1,39 @@
+<div class="ticket-card" data-ticket-id="{{ ticket.id }}">
+  <div class="ticket-card-header">
+    <span class="ticket-title">{{ ticket.title }}</span>
+    <span class="ticket-assignee">{{ ticket.assignee or "—" }}</span>
+  </div>
+  <div class="ticket-meta">Started: {{ ticket.start_datetime.strftime("%Y-%m-%d %H:%M") }}</div>
+  {% if ticket.blocked_by_id and blocked_by_titles.get(ticket.id|string) %}
+    <div class="ticket-blocked-by">Blocked by: {{ blocked_by_titles.get(ticket.id|string) }}</div>
+  {% endif %}
+  <p class="ticket-instructions">{{ ticket.instructions[:120] }}{% if ticket.instructions|length > 120 %}…{% endif %}</p>
+  <div class="ticket-actions">
+    <form method="post" action="/tickets/{{ ticket.id }}/status" class="status-form" data-ticket-id="{{ ticket.id }}">
+      <select name="status" id="status-{{ ticket.id }}" class="status-select">
+        <option value="todo" {% if ticket.status.value == 'todo' %}selected{% endif %}>Todo</option>
+        <option value="in_progress" {% if ticket.status.value == 'in_progress' %}selected{% endif %}>In progress</option>
+        <option value="review" {% if ticket.status.value == 'review' %}selected{% endif %}>Review</option>
+        <option value="done" {% if ticket.status.value == 'done' %}selected{% endif %}>Done</option>
+        <option value="blocked" {% if ticket.status.value == 'blocked' %}selected{% endif %}>Blocked</option>
+      </select>
+      <div class="blocked-by-row">
+        <label for="blocked-by-select-{{ ticket.id }}">Blocked by</label>
+        <select name="blocked_by_ticket_id" id="blocked-by-select-{{ ticket.id }}" class="status-select" aria-label="Ticket that blocks this one (required when status is Blocked)">
+          <option value="">— Select ticket —</option>
+          {% for other in all_tickets %}
+            {% if other.id != ticket.id %}
+              <option value="{{ other.id }}" {% if ticket.blocked_by_id and other.id == ticket.blocked_by_id %}selected{% endif %}>{{ other.title }} ({{ other.status.value }})</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn-status-update">Update status</button>
+    </form>
+    <button type="button" class="delete-btn"
+            hx-delete="/api/tickets/{{ ticket.id }}"
+            hx-target="closest .ticket-card"
+            hx-swap="outerHTML"
+            hx-confirm="Delete this ticket?">Delete</button>
+  </div>
+</div>

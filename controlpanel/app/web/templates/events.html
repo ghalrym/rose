@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Events – Rose Control Panel{% endblock %}
+{% block body %}
+<div class="events-page app-shell">
+  <header class="page-header">
+    <h1>Events</h1>
+    <p class="muted">Platform events reported by services. Newest first.</p>
+  </header>
+
+  <ul class="events-list" aria-label="Event log">
+    {% for event in events %}
+    <li class="events-list-item">
+      <time class="events-list-time" datetime="{{ event.timestamp.isoformat() }}Z">{{ event.timestamp.strftime('%Y-%m-%d %H:%M:%S') }} UTC</time>
+      <div class="events-list-detail">
+        <span class="events-list-source">{{ event.source }}</span>
+        <span class="events-list-event">{{ event.event }}</span>
+        {% if event.message %}
+        <span class="events-list-message">{{ event.message }}</span>
+        {% endif %}
+      </div>
+    </li>
+    {% else %}
+    <li class="events-list-empty muted">No events yet. Services can report events to <code>POST /api/events</code>.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

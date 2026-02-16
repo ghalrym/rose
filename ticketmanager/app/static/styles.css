@@ -1,0 +1,383 @@
+/* Ticket Manager – Kanban and modals (extends platform theme) */
+
+:root {
+  --column-width: 300px;
+}
+
+/* Modal */
+.modal-toggle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+.modal-toggle:checked ~ .modal-overlay {
+  display: flex;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  cursor: default;
+}
+
+.modal-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  max-height: calc(100vh - 3rem);
+  overflow: auto;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  border: 1px solid var(--border);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin: -0.5rem -0.5rem -0.5rem 0;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.modal-close:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+/* Filter bar */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-bar label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.filter-bar input {
+  padding: 0.45rem 0.65rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-page);
+  color: var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.filter-bar input:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.filter-bar button[type="submit"] {
+  padding: 0.45rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.filter-bar button[type="submit"]:hover {
+  background: var(--accent-hover);
+}
+
+.filter-bar .clear-filters {
+  font-size: 0.875rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.filter-bar .clear-filters:hover {
+  text-decoration: underline;
+}
+
+/* Kanban board */
+.kanban-board {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  min-height: 400px;
+}
+
+.kanban-column {
+  flex: 0 0 var(--column-width);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  min-height: 200px;
+  box-shadow: var(--shadow-sm);
+}
+
+.kanban-column h2 {
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.ticket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Ticket card */
+.ticket-card {
+  padding: 1rem;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.ticket-card:hover {
+  border-color: var(--text-subtle);
+  box-shadow: var(--shadow-sm);
+}
+
+.ticket-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ticket-title {
+  font-weight: 600;
+  flex: 1;
+  min-width: 0;
+  color: var(--text);
+}
+
+.ticket-assignee {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.ticket-meta {
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+  margin-bottom: 0.5rem;
+}
+
+.ticket-blocked-by {
+  font-size: 0.8125rem;
+  color: var(--danger);
+  margin-bottom: 0.35rem;
+}
+
+.ticket-instructions {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.45;
+}
+
+.ticket-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.status-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.blocked-by-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.blocked-by-row label {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.blocked-by-row .status-select {
+  flex: 1;
+  min-width: 0;
+}
+
+.btn-status-update {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.btn-status-update:hover {
+  background: var(--accent-hover);
+}
+
+.status-select {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.8125rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.status-select:hover,
+.status-select:focus {
+  border-color: var(--text-subtle);
+  outline: none;
+}
+
+.delete-btn {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background: var(--danger-light);
+  color: var(--danger);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.delete-btn:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* Ticket form (modal) */
+.ticket-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ticket-form label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.ticket-form input,
+.ticket-form textarea {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.ticket-form input:focus,
+.ticket-form textarea:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.ticket-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.create-blocked-by-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.create-blocked-by-row label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.form-actions .btn-primary {
+  flex: 1;
+}

@@ -1,0 +1,27 @@
+[project]
+name = "heartbeat"
+version = "0.1.0"
+description = "Heartbeat service that coordinates agentmanager, messagequeue, and ticketmanager."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.27.0",
+    "pydantic>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.8.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+
+[tool.uv]
+dev-dependencies = [
+    "ruff>=0.8.0",
+]

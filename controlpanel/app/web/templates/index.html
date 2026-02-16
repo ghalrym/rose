@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Rose Control Panel{% endblock %}
+{% block body %}
+<header class="control-panel-header">
+  <h1>Rose Control Panel</h1>
+  <p class="muted">Manage all platform services from one place. Select a service below to open it in the frame.</p>
+</header>
+
+<nav class="service-nav" aria-label="Service navigation">
+  <a href="#" class="service-nav-link active" data-iframe-src="/events" data-service="events">Events</a>
+  <a href="#" class="service-nav-link" data-iframe-src="{{ ticketmanager_url }}" data-service="ticketmanager">Ticket Manager</a>
+  <a href="#" class="service-nav-link" data-iframe-src="{{ agentmanager_url }}" data-service="agentmanager">Agentmanager</a>
+  <a href="#" class="service-nav-link" data-iframe-src="{{ messagequeue_url }}/docs" data-service="messagequeue">Message Queue (API)</a>
+  <a href="#" class="service-nav-link" data-iframe-src="{{ discordgateway_url }}" data-service="discordgateway">Discord Gateway</a>
+</nav>
+
+<div class="iframe-container">
+  <iframe
+    id="service-frame"
+    title="Service view"
+    src="/events"
+    class="service-frame"
+  ></iframe>
+</div>
+
+<script>
+  (function() {
+    var frame = document.getElementById('service-frame');
+    var links = document.querySelectorAll('.service-nav-link');
+    links.forEach(function(link) {
+      link.addEventListener('click', function(event) {
+        event.preventDefault();
+        var src = link.getAttribute('data-iframe-src');
+        if (src) {
+          frame.src = src;
+          links.forEach(function(l) { l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    });
+  })();
+</script>
+{% endblock %}

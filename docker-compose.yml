@@ -1,0 +1,81 @@
+services:
+  controlpanel:
+    build:
+      context: .
+      dockerfile: controlpanel/Dockerfile
+    ports:
+      - "8010:8010"
+    environment:
+      - TICKETMANAGER_URL=http://localhost:8000
+      - AGENTMANAGER_URL=http://localhost:8001
+      - MESSAGEQUEUE_URL=http://localhost:8002
+      - DISCORDGATEWAY_URL=http://localhost:8003
+
+  web:
+    build:
+      context: .
+      dockerfile: ticketmanager/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ticketmanager_data:/app/ticketmanager/data
+
+  agentmanager:
+    build:
+      context: .
+      dockerfile: agentmanager/Dockerfile
+    ports:
+      - "8001:8000"
+    volumes:
+      - agentmanager_data:/app/agentmanager/data
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      - CONTROL_PANEL_URL=http://controlpanel:8010
+
+  messagequeue:
+    build:
+      context: .
+      dockerfile: messagequeue/Dockerfile
+    ports:
+      - "8002:8000"
+    volumes:
+      - messagequeue_data:/app/messagequeue/data
+
+  discordgateway:
+    build:
+      context: .
+      dockerfile: discordgateway/Dockerfile
+    ports:
+      - "8003:8000"
+    volumes:
+      - discordgateway_data:/app/discordgateway/data
+    environment:
+      - AGENTMANAGER_URL=http://agentmanager:8000
+      - MESSAGEQUEUE_URL=http://messagequeue:8000
+      - CONTROL_PANEL_URL=http://controlpanel:8010
+    depends_on:
+      - agentmanager
+      - messagequeue
+      - controlpanel
+
+  heartbeat:
+    build:
+      context: .
+      dockerfile: heartbeat/Dockerfile
+    environment:
+      - AGENTMANAGER_URL=http://agentmanager:8000
+      - MESSAGEQUEUE_URL=http://messagequeue:8000
+      - TICKETMANAGER_URL=http://web:8000
+      - CONTROL_PANEL_URL=http://controlpanel:8010
+    depends_on:
+      - web
+      - agentmanager
+      - messagequeue
+      - controlpanel
+
+volumes:
+  ticketmanager_data:
+  agentmanager_data:
+  messagequeue_data:
+  discordgateway_data:
